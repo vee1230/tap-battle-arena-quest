@@ -4,6 +4,7 @@ import { GameScreen } from '@/screens/GameScreen';
 import { ResultScreen } from '@/screens/ResultScreen';
 import { Difficulty } from '@/components/game/DifficultyButton';
 import { useGameStats } from '@/hooks/useGameStats';
+import { InstallPrompt } from '@/components/InstallPrompt';
 
 type GameState = 'home' | 'playing' | 'result';
 
@@ -37,23 +38,32 @@ const Index = () => {
     setGameState('home');
   }, []);
 
-  switch (gameState) {
-    case 'home':
-      return <HomeScreen onStartGame={handleStartGame} />;
-    case 'playing':
-      return <GameScreen difficulty={difficulty} onGameEnd={handleGameEnd} />;
-    case 'result':
-      return (
-        <ResultScreen
-          playerScore={result.playerScore}
-          aiScore={result.aiScore}
-          difficulty={difficulty}
-          stats={stats}
-          onPlayAgain={handlePlayAgain}
-          onHome={handleHome}
-        />
-      );
-  }
+  const renderScreen = () => {
+    switch (gameState) {
+      case 'home':
+        return <HomeScreen onStartGame={handleStartGame} />;
+      case 'playing':
+        return <GameScreen difficulty={difficulty} onGameEnd={handleGameEnd} />;
+      case 'result':
+        return (
+          <ResultScreen
+            playerScore={result.playerScore}
+            aiScore={result.aiScore}
+            difficulty={difficulty}
+            stats={stats}
+            onPlayAgain={handlePlayAgain}
+            onHome={handleHome}
+          />
+        );
+    }
+  };
+
+  return (
+    <>
+      {renderScreen()}
+      <InstallPrompt />
+    </>
+  );
 };
 
 export default Index;
